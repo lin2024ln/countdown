@@ -13,15 +13,14 @@
 
   body {
     margin: 0;
-    font-family: "Roboto", Arial, sans-serif;
-  }
+    font-family: "Roboto", Arial, sans-serif;  }
 
   /* ===============================
-     TOP COUNTDOWN STRIP
+     TOP COUNTDOWN STRIP (NO BG)
   =============================== */
   .jem-countdown-wrap {
     width: 100%;
-    border-bottom: 1px solid rgba(0,0,0,.08);
+    border-bottom: 1px solid rgba(255,255,255,.12);
   }
 
   .jem-countdown {
@@ -39,6 +38,7 @@
     width: 160px;
     height: auto;
     display: block;
+    filter: drop-shadow(0 0 18px rgba(255,255,255,.15));
   }
 
   /* TIMER */
@@ -61,7 +61,7 @@
     font-size: 11px;
     letter-spacing: .16em;
     text-transform: uppercase;
-    color: rgba(0,0,0,.55);
+    color: rgba(255,255,255,.65);
   }
 
   /* NUMBER SECOND */
@@ -69,7 +69,8 @@
     font-size: 36px;
     font-weight: 900;
     line-height: 1;
-    color: #000;
+    color: #ffffff;
+    text-shadow: 0 0 24px rgba(255,255,255,.25);
   }
 
   /* ===============================
@@ -101,6 +102,7 @@
 
     .jem-number {
       font-size: 20px;
+      text-shadow: 0 0 14px rgba(255,255,255,.25);
     }
   }
 </style>
