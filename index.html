@@ -1,224 +1,131 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JEM TV — Countdown</title>
+<!-- TOP COUNTDOWN BAR -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700;900&display=swap" rel="stylesheet">
 
-  <!-- Roboto ONLY -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  .jem-countdown-wrap{
+    width:100%;
+    background:#0b1020;
+    border-bottom:1px solid rgba(255,255,255,.12);
+    font-family:"Roboto", Arial, sans-serif;
+  }
 
-  <style>
-    :root{
-      --bg1:#0b1020;
-      --bg2:#111a33;
-      --panel:rgba(255,255,255,.08);
-      --panel2:rgba(255,255,255,.06);
-      --text:#ffffff;
-      --muted:rgba(255,255,255,.75);
-      --stroke:rgba(255,255,255,.14);
-      --glow:rgba(255,255,255,.18);
-      --radius:22px;
+  .jem-countdown{
+    max-width:1220px;
+    margin:0 auto;
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+
+  .jem-logo{
+    width:110px;
+    flex-shrink:0;
+  }
+
+  .jem-logo img{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+
+  .jem-timer{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    font-weight:900;
+    color:#fff;
+  }
+
+  .jem-unit{
+    text-align:center;
+    min-width:54px;
+  }
+
+  .jem-num{
+    font-size:20px;
+    line-height:1;
+  }
+
+  .jem-lbl{
+    font-size:9px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    opacity:.75;
+    margin-top:4px;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px){
+    .jem-countdown{
+      padding:10px 12px;
+      gap:10px;
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-
-    body{
-      margin:0;
-      font-family:"Roboto", Arial, sans-serif;
-      color:var(--text);
-      place-items:top;
-      padding:24px;
+    .jem-logo{
+      width:90px;
     }
 
-    /* ✅ 1220 max-width */
-    .wrap{
-      width:100%;
-      max-width:1220px;
-      margin-inline:auto;
+    .jem-timer{
+      gap:8px;
     }
 
-    .card{
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, var(--panel), var(--panel2));
-      border-radius: var(--radius);
-      box-shadow: 0 24px 80px rgba(0,0,0,.45);
-      overflow:hidden;
+    .jem-unit{
+      min-width:40px;
     }
 
-    /* HEADER (logo only) */
-    .top{
-      padding:34px 24px 18px;
-      display:flex;
-      justify-content:center;
-      border-bottom:1px solid var(--stroke);
+    .jem-num{
+      font-size:16px;
     }
 
-    /* ✅ larger logo desktop */
-    .logo{
-      width:140px;
-      height:auto;
+    .jem-lbl{
+      font-size:8px;
     }
-    .logo img{
-      width:100%;
-      height:auto;
-      display:block;
-    }
+  }
+</style>
 
-    /* COUNTDOWN */
-    .content{
-      padding:22px 26px 26px;
-    }
+<div class="jem-countdown-wrap" id="jemCountdownBar">
+  <div class="jem-countdown">
+    <div class="jem-logo">
+      <img src="https://res.cloudinary.com/jemdev/image/upload/v1751394501/Group_1597880754_197fa55471.png" alt="JEM TV">
+    </div>
 
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:14px;
-    }
+    <div class="jem-timer" aria-live="polite">
+      <div class="jem-unit"><div class="jem-num" id="cd-d">0</div><div class="jem-lbl">Days</div></div>
+      <div class="jem-unit"><div class="jem-num" id="cd-h">00</div><div class="jem-lbl">Hrs</div></div>
+      <div class="jem-unit"><div class="jem-num" id="cd-m">00</div><div class="jem-lbl">Min</div></div>
+      <div class="jem-unit"><div class="jem-num" id="cd-s">00</div><div class="jem-lbl">Sec</div></div>
+    </div>
+  </div>
+</div>
 
-    .unit{
-      border:1px solid var(--stroke);
-      border-radius:18px;
-      padding:16px 12px;
-      text-align:center;
-      background: rgba(0,0,0,.18);
-    }
+<script>
+  /* CONFIG */
+  const LAUNCH_ISO = "2025-12-24T12:00:00-05:00";
+  const AFTER_LAUNCH = "hide"; // "hide" | "freeze"
 
-    .num{
-      font-size:36px;
-      font-weight:900;
-      line-height:1;
-      text-shadow: 0 0 24px var(--glow);
-    }
+  const $ = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2,"0");
+  const launchMs = Date.parse(LAUNCH_ISO);
 
-    .lbl{
-      margin-top:8px;
-      font-size:11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color:var(--muted);
+  function tick(){
+    if (Number.isNaN(launchMs)) return;
+
+    const now = Date.now();
+    let s = Math.max(0, Math.floor((launchMs - now) / 1000));
+
+    if (s <= 0 && AFTER_LAUNCH === "hide") {
+      document.getElementById("jemCountdownBar").style.display = "none";
+      return;
     }
 
-    .hidden{ display:none !important; }
+    $("cd-d").textContent = Math.floor(s / 86400);
+    $("cd-h").textContent = pad(Math.floor(s % 86400 / 3600));
+    $("cd-m").textContent = pad(Math.floor(s % 3600 / 60));
+    $("cd-s").textContent = pad(s % 60);
+  }
 
-    /* ✅ MOBILE: one row, smaller */
-    @media (max-width:720px){
-      body{ padding:16px; }
-
-      .top{
-        padding:18px 16px 12px;
-      }
-
-      .logo{
-        width:120px; /* still large, but tighter */
-      }
-
-      .content{
-        padding:14px 14px 16px;
-      }
-
-      .grid{
-        grid-template-columns: repeat(4, minmax(0, 1fr)); /* force one row */
-        gap:8px;
-      }
-
-      .unit{
-        border-radius:14px;
-        padding:10px 8px;
-      }
-
-      .num{
-        font-size:20px;
-        font-weight:900;
-        text-shadow:none;
-      }
-
-      .lbl{
-        margin-top:6px;
-        font-size:9px;
-        letter-spacing:.12em;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <main class="wrap card" id="countdownPage">
-    <header class="top">
-      <div class="logo" aria-label="JEM TV Logo">
-        <img
-          id="logoImg"
-          src="https://res.cloudinary.com/jemdev/image/upload/v1751394501/Group_1597880754_197fa55471.png"
-          alt="JEM TV"
-        />
-      </div>
-    </header>
-
-    <section class="content" id="countdownBlock" aria-label="Countdown to launch">
-      <div class="grid" role="timer" aria-live="polite">
-        <div class="unit"><div class="num" id="d">0</div><div class="lbl">Days</div></div>
-        <div class="unit"><div class="num" id="h">00</div><div class="lbl">Hours</div></div>
-        <div class="unit"><div class="num" id="m">00</div><div class="lbl">Mins</div></div>
-        <div class="unit"><div class="num" id="s">00</div><div class="lbl">Secs</div></div>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    /**
-     * CONFIG
-     * LAUNCH_ISO: exact launch date/time in ISO format WITH timezone offset
-     * Example (New York): "2025-12-24T12:00:00-05:00"
-     */
-    const LAUNCH_ISO  = "2025-12-24T12:00:00-05:00"; // <-- set this
-
-    /**
-     * After launch:
-     * - "disappear": hide the whole countdown page
-     * - "freeze": keep showing 00:00:00
-     */
-    const AFTER_LAUNCH = "disappear"; // "disappear" | "freeze"
-
-    const $ = (id) => document.getElementById(id);
-    const pad2 = (n) => String(n).padStart(2, "0");
-
-    const launchMs = Date.parse(LAUNCH_ISO);
-
-    function render(msLeft){
-      const clamped = Math.max(0, msLeft);
-      const totalSeconds = Math.floor(clamped / 1000);
-
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const mins  = Math.floor((totalSeconds % 3600) / 60);
-      const secs  = totalSeconds % 60;
-
-      $("d").textContent = String(days);
-      $("h").textContent = pad2(hours);
-      $("m").textContent = pad2(mins);
-      $("s").textContent = pad2(secs);
-    }
-
-    function tick(){
-      if (Number.isNaN(launchMs)) return;
-
-      const now = Date.now();
-      const msLeft = launchMs - now;
-
-      if (msLeft <= 0) {
-        render(0);
-        if (AFTER_LAUNCH === "disappear") {
-          $("countdownPage").classList.add("hidden");
-        }
-        return;
-      }
-
-      render(msLeft);
-    }
-
-    setInterval(tick, 250);
-    tick();
-  </script>
-</body>
-</html>
+  setInterval(tick, 250);
+  tick();
+</script>
