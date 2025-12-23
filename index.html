@@ -10,15 +10,13 @@
 
 <style>
   * { box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
 
   body {
-    margin: 0;
     font-family: "Roboto", Arial, sans-serif;
   }
 
-  /* ===============================
-     TOP COUNTDOWN STRIP (NO BG)
-  =============================== */
+  /* TOP COUNTDOWN STRIP (NO BG) */
   .jem-countdown-wrap {
     width: 100%;
     border-bottom: 1px solid rgba(255,255,255,.12);
@@ -32,29 +30,39 @@
     align-items: center;
     justify-content: space-between;
     gap: 28px;
+    min-width: 0; /* critical */
   }
 
-  /* LOGO */
+  /* LOGO (✅ shrinkable on any phone) */
+  .jem-logo{
+    flex: 0 1 auto;     /* allow shrinking */
+    min-width: 0;
+  }
   .jem-logo img {
-    width: 160px;
+    width: clamp(92px, 22vw, 160px); /* ✅ always fits */
     height: auto;
     display: block;
     filter: drop-shadow(0 0 18px rgba(255,255,255,.15));
   }
 
-  /* TIMER */
+  /* TIMER (✅ never clips) */
   .jem-timer {
+    flex: 1 1 auto;
+    min-width: 0;      /* critical */
     display: flex;
     gap: 28px;
     align-items: center;
+    justify-content: flex-end;
   }
 
   .jem-unit {
+    flex: 1 1 0;        /* equal width units */
+    min-width: 0;       /* critical for tiny screens */
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    min-width: 84px;
+    text-align: center;
   }
 
   /* LABEL FIRST */
@@ -63,28 +71,23 @@
     letter-spacing: .16em;
     text-transform: uppercase;
     color: rgba(255,255,255,.65);
+    white-space: nowrap;
   }
 
-  /* NUMBER SECOND */
+  /* NUMBER SECOND (✅ fluid scaling for any phone width) */
   .jem-number {
-    font-size: 36px;
+    font-size: clamp(16px, 5.2vw, 36px); /* ✅ never too big to fit */
     font-weight: 900;
     line-height: 1;
     color: #ffffff;
     text-shadow: 0 0 24px rgba(255,255,255,.25);
   }
 
-  /* ===============================
-     MOBILE — ONE ROW, TIGHT
-  =============================== */
+  /* MOBILE — ONE ROW, TIGHT (same style) */
   @media (max-width: 768px) {
     .jem-countdown {
       padding: 16px 12px;
       gap: 18px;
-    }
-
-    .jem-logo img {
-      width: 120px;
     }
 
     .jem-timer {
@@ -92,7 +95,6 @@
     }
 
     .jem-unit {
-      min-width: 56px;
       gap: 4px;
     }
 
@@ -102,18 +104,44 @@
     }
 
     .jem-number {
-      font-size: 20px;
       text-shadow: 0 0 14px rgba(255,255,255,.25);
     }
+  }
+
+  /* Tiny phones: tighten gaps + shorten long labels (still same look) */
+  @media (max-width: 420px){
+    .jem-timer{ gap: 10px; }
+    .jem-label-min, .jem-label-sec{ font-size:0; } /* replace text */
+
+    .jem-label-min::after{
+      content:"Min";
+      font-size:8px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.65);
+      display:inline-block;
+    }
+    .jem-label-sec::after{
+      content:"Sec";
+      font-size:8px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.65);
+      display:inline-block;
+    }
+  }
+
+  @media (max-width: 320px){
+    .jem-countdown{ gap: 12px; }
+    .jem-timer{ gap: 8px; }
+    .jem-label{ letter-spacing:.12em; }
+    .jem-number{ text-shadow:none; }
   }
 </style>
 </head>
 
 <body>
 
-<!-- ===============================
-     TOP COUNTDOWN
-=============================== -->
 <div class="jem-countdown-wrap" id="jemCountdown">
   <div class="jem-countdown">
 
@@ -128,16 +156,19 @@
         <div class="jem-label">Days</div>
         <div class="jem-number" id="cd-d">0</div>
       </div>
+
       <div class="jem-unit">
         <div class="jem-label">Hours</div>
         <div class="jem-number" id="cd-h">00</div>
       </div>
+
       <div class="jem-unit">
-        <div class="jem-label">Minutes</div>
+        <div class="jem-label jem-label-min">Minutes</div>
         <div class="jem-number" id="cd-m">00</div>
       </div>
+
       <div class="jem-unit">
-        <div class="jem-label">Seconds</div>
+        <div class="jem-label jem-label-sec">Seconds</div>
         <div class="jem-number" id="cd-s">00</div>
       </div>
     </div>
@@ -146,9 +177,7 @@
 </div>
 
 <script>
-  /* ===============================
-     CONFIG
-  =============================== */
+  /* CONFIG */
   const LAUNCH_ISO = "2025-12-24T12:00:00-05:00"; // set this
   const AFTER_LAUNCH = "hide"; // "hide" | "freeze"
 
