@@ -1,171 +1,298 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JEM TV Countdown</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEM TV — Enduring Peace Countdown</title>
 
-<!-- Roboto ONLY -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+  <!-- Roboto ONLY -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700;900&display=swap" rel="stylesheet">
 
-<style>
-  * { box-sizing: border-box; }
-
-  /* ===============================
-     TOP COUNTDOWN STRIP (NO BG)
-  =============================== */
-  .jem-countdown-wrap {
-    width: 100%;
-    border-bottom: 1px solid rgba(255,255,255,.12);
-  }
-
-  .jem-countdown {
-    max-width: 1220px;
-    margin: 0 auto;
-    padding: 22px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 28px;
-  }
-
-  /* LOGO */
-  .jem-logo img {
-    width: 160px;
-    height: auto;
-    display: block;
-    filter: drop-shadow(0 0 18px rgba(255,255,255,.15));
-  }
-
-  /* TIMER */
-  .jem-timer {
-    display: flex;
-    gap: 28px;
-    align-items: center;
-  }
-
-  .jem-unit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    min-width: 84px;
-  }
-
-  /* LABEL FIRST */
-  .jem-label {
-    font-size: 11px;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.65);
-  }
-
-  /* NUMBER SECOND */
-  .jem-number {
-    font-size: 36px;
-    font-weight: 900;
-    line-height: 1;
-    color: #ffffff;
-    text-shadow: 0 0 24px rgba(255,255,255,.25);
-  }
-
-  /* ===============================
-     MOBILE — ONE ROW, TIGHT
-  =============================== */
-  @media (max-width: 768px) {
-    .jem-logo img {
-      width: 120px;
+  <style>
+    :root{
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.65);
+      --stroke:rgba(255,255,255,.14);
+      --glow:rgba(255,255,255,.22);
+      --panel:rgba(255,255,255,.08);
+      --panel2:rgba(255,255,255,.06);
+      --radius:22px;
     }
 
-    .jem-timer {
-      gap: 14px;
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; margin:0; padding:0; }
+    body{
+      font-family:"Roboto", Arial, sans-serif;
+      color:var(--text);
+      /* IMPORTANT: no background here (transparent). Parent page controls bg. */
+      background: transparent;
     }
 
-    .jem-unit {
-      min-width: 56px;
-      gap: 4px;
+    /* 1220 max width */
+    .wrap{
+      width:100%;
+      max-width:1220px;
+      margin:0 auto;
+      padding:16px;
     }
 
-    .jem-label {
-      font-size: 8px;
-      letter-spacing: .14em;
+    /* Presence strip (no page background) */
+    .bar{
+      border:1px solid var(--stroke);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
+      box-shadow: 0 14px 50px rgba(0,0,0,.35);
+      padding:16px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      overflow:hidden;
     }
 
-    .jem-number {
-      font-size: 20px;
-      text-shadow: 0 0 14px rgba(255,255,255,.25);
+    /* Logo */
+    .logo{
+      flex:0 0 auto;
+      display:flex;
+      align-items:center;
+      min-width:0;
     }
-  }
-</style>
+    .logo img{
+      width:170px;
+      height:auto;
+      display:block;
+      filter: drop-shadow(0 0 16px rgba(255,255,255,.14));
+    }
+
+    /* Timer */
+    .timer{
+      flex:1 1 auto;
+      display:flex;
+      align-items:stretch;
+      justify-content:flex-end;
+      gap:12px;
+      min-width:0; /* critical */
+    }
+
+    .unit{
+      flex:1 1 0;
+      min-width:0; /* critical */
+      text-align:center;
+      padding:12px 10px;
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      background: rgba(0,0,0,.18);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:7px;
+    }
+
+    /* TEXT FIRST */
+    .lbl{
+      font-size:11px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    /* THEN NUMBER */
+    .num{
+      font-size:34px;
+      font-weight:900;
+      line-height:1;
+      letter-spacing:.3px;
+      text-shadow: 0 0 22px var(--glow);
+      color:var(--text);
+    }
+
+    /* ====== MOBILE: always one row, smaller, never clips ====== */
+    @media (max-width: 560px){
+      .wrap{ padding:12px; }
+      .bar{
+        padding:12px 12px;
+        border-radius:18px;
+        gap:12px;
+      }
+
+      .logo img{ width:120px; }
+
+      .timer{ gap:8px; }
+
+      .unit{
+        padding:10px 8px;
+        border-radius:14px;
+        gap:5px;
+      }
+
+      .lbl{
+        font-size:9px;
+        letter-spacing:.14em;
+      }
+
+      .num{
+        font-size:20px;
+        text-shadow:none;
+      }
+
+      /* Shorten long labels only on small screens */
+      .lbl-min, .lbl-sec{ font-size:0; }
+
+      .lbl-min::after{
+        content:"Min";
+        font-size:9px;
+        letter-spacing:.14em;
+        text-transform:uppercase;
+        color:var(--muted);
+        display:inline-block;
+      }
+      .lbl-sec::after{
+        content:"Sec";
+        font-size:9px;
+        letter-spacing:.14em;
+        text-transform:uppercase;
+        color:var(--muted);
+        display:inline-block;
+      }
+    }
+
+    /* Ultra-small phones */
+    @media (max-width: 360px){
+      .logo img{ width:108px; }
+      .timer{ gap:6px; }
+      .unit{ padding:9px 7px; }
+      .num{ font-size:18px; }
+    }
+  </style>
 </head>
 
 <body>
-
-<!-- ===============================
-     TOP COUNTDOWN
-=============================== -->
-<div class="jem-countdown-wrap" id="jemCountdown">
-  <div class="jem-countdown">
-
-    <div class="jem-logo">
-      <img
-        src="https://res.cloudinary.com/jemdev/image/upload/v1751394501/Group_1597880754_197fa55471.png"
-        alt="JEM TV">
-    </div>
-
-    <div class="jem-timer" role="timer" aria-live="polite">
-      <div class="jem-unit">
-        <div class="jem-label">Days</div>
-        <div class="jem-number" id="cd-d">0</div>
+  <main class="wrap">
+    <section class="bar" aria-label="JEM TV Countdown Bar">
+      <div class="logo" aria-label="Enduring Peace Logo">
+        <img
+          id="logoImg"
+          src="https://res.cloudinary.com/jemdev/image/upload/v1751394501/Group_1597880754_197fa55471.png"
+          alt="Enduring Peace"
+        />
       </div>
-      <div class="jem-unit">
-        <div class="jem-label">Hours</div>
-        <div class="jem-number" id="cd-h">00</div>
+
+      <div class="timer" role="timer" aria-live="polite" aria-label="Countdown">
+        <div class="unit">
+          <div class="lbl">Days</div>
+          <div class="num" id="d">0</div>
+        </div>
+
+        <div class="unit">
+          <div class="lbl">Hours</div>
+          <div class="num" id="h">00</div>
+        </div>
+
+        <div class="unit">
+          <div class="lbl lbl-min">Minutes</div>
+          <div class="num" id="m">00</div>
+        </div>
+
+        <div class="unit">
+          <div class="lbl lbl-sec">Seconds</div>
+          <div class="num" id="s">00</div>
+        </div>
       </div>
-      <div class="jem-unit">
-        <div class="jem-label">Minutes</div>
-        <div class="jem-number" id="cd-m">00</div>
-      </div>
-      <div class="jem-unit">
-        <div class="jem-label">Seconds</div>
-        <div class="jem-number" id="cd-s">00</div>
-      </div>
-    </div>
+    </section>
+  </main>
 
-  </div>
-</div>
+  <script>
+    /**
+     * =========================
+     * CONFIG — EDIT THESE
+     * =========================
+     * LAUNCH_ISO: exact launch date/time in ISO format WITH timezone offset.
+     * Example (New York): "2025-12-24T12:00:00-05:00"
+     */
+    const LAUNCH_ISO  = "2025-12-24T12:00:00-05:00"; // <-- set this
 
-<script>
-  /* ===============================
-     CONFIG
-  =============================== */
-  const LAUNCH_ISO = "2025-12-24T12:00:00-05:00"; // set this
-  const AFTER_LAUNCH = "hide"; // "hide" | "freeze"
+    /**
+     * After launch:
+     * - "disappear": hide the whole bar
+     * - "freeze": keep showing 00:00:00
+     */
+    const AFTER_LAUNCH = "disappear"; // "disappear" | "freeze"
 
-  const $ = id => document.getElementById(id);
-  const pad = n => String(n).padStart(2, "0");
-  const launchMs = Date.parse(LAUNCH_ISO);
+    // =========================
+    const $ = (id) => document.getElementById(id);
+    const pad2 = (n) => String(n).padStart(2, "0");
+    const launchMs = Date.parse(LAUNCH_ISO);
 
-  function tick() {
-    if (Number.isNaN(launchMs)) return;
+    function render(msLeft){
+      const clamped = Math.max(0, msLeft);
+      const totalSeconds = Math.floor(clamped / 1000);
 
-    const now = Date.now();
-    let s = Math.max(0, Math.floor((launchMs - now) / 1000));
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const mins  = Math.floor((totalSeconds % 3600) / 60);
+      const secs  = totalSeconds % 60;
 
-    if (s <= 0 && AFTER_LAUNCH === "hide") {
-      document.getElementById("jemCountdown").style.display = "none";
-      return;
+      $("d").textContent = String(days);
+      $("h").textContent = pad2(hours);
+      $("m").textContent = pad2(mins);
+      $("s").textContent = pad2(secs);
     }
 
-    $("cd-d").textContent = Math.floor(s / 86400);
-    $("cd-h").textContent = pad(Math.floor(s % 86400 / 3600));
-    $("cd-m").textContent = pad(Math.floor(s % 3600 / 60));
-    $("cd-s").textContent = pad(s % 60);
-  }
+    function hideBar(){
+      document.documentElement.style.display = "none";
+      document.body.style.display = "none";
+    }
 
-  setInterval(tick, 250);
-  tick();
-</script>
+    function tick(){
+      if (Number.isNaN(launchMs)) return;
 
+      const now = Date.now();
+      const msLeft = launchMs - now;
+
+      if (msLeft <= 0) {
+        render(0);
+        if (AFTER_LAUNCH === "disappear") hideBar();
+        return;
+      }
+      render(msLeft);
+    }
+
+    const timer = setInterval(tick, 250);
+    tick();
+
+    /**
+     * OPTIONAL (recommended if embedded in iframe):
+     * Post height to parent so iframe can auto-resize perfectly.
+     * Safe even if not embedded.
+     */
+    (function () {
+      function sendHeight() {
+        try{
+          const h = Math.max(
+            document.body.scrollHeight,
+            document.documentElement.scrollHeight,
+            document.body.offsetHeight,
+            document.documentElement.offsetHeight
+          );
+          parent.postMessage({ type: "jem_iframe_height", height: h }, "*");
+        }catch(e){}
+      }
+
+      window.addEventListener("load", () => {
+        sendHeight();
+        setTimeout(sendHeight, 150);
+        setTimeout(sendHeight, 600);
+      });
+
+      window.addEventListener("resize", sendHeight);
+
+      try{
+        new ResizeObserver(sendHeight).observe(document.documentElement);
+      }catch(e){}
+    })();
+  </script>
 </body>
 </html>
