@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEM TV — Countdown</title>
+
+  <!-- Roboto ONLY -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#111a33;
+      --panel:rgba(255,255,255,.08);
+      --panel2:rgba(255,255,255,.06);
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.75);
+      --stroke:rgba(255,255,255,.14);
+      --glow:rgba(255,255,255,.18);
+      --radius:22px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    /* ✅ 1220 max-width */
+    .wrap{
+      width:100%;
+      max-width:1220px;
+      margin-inline:auto;
+    }
+
+    .card{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
+      border-radius: var(--radius);
+      box-shadow: 0 24px 80px rgba(0,0,0,.45);
+      overflow:hidden;
+    }
+
+    /* HEADER (logo only) */
+    .top{
+      padding:34px 24px 18px;
+      display:flex;
+      justify-content:center;
+      border-bottom:1px solid var(--stroke);
+    }
+
+    /* ✅ larger logo desktop */
+    .logo{
+      width:140px;
+      height:auto;
+    }
+    .logo img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+
+    /* COUNTDOWN */
+    .content{
+      padding:22px 26px 26px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:14px;
+    }
+
+    .unit{
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      padding:16px 12px;
+      text-align:center;
+      background: rgba(0,0,0,.18);
+    }
+
+    .num{
+      font-size:36px;
+      font-weight:900;
+      line-height:1;
+      text-shadow: 0 0 24px var(--glow);
+    }
+
+    .lbl{
+      margin-top:8px;
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .hidden{ display:none !important; }
+
+    /* ✅ MOBILE: one row, smaller */
+    @media (max-width:720px){
+      body{ padding:16px; }
+
+      .top{
+        padding:18px 16px 12px;
+      }
+
+      .logo{
+        width:120px; /* still large, but tighter */
+      }
+
+      .content{
+        padding:14px 14px 16px;
+      }
+
+      .grid{
+        grid-template-columns: repeat(4, minmax(0, 1fr)); /* force one row */
+        gap:8px;
+      }
+
+      .unit{
+        border-radius:14px;
+        padding:10px 8px;
+      }
+
+      .num{
+        font-size:20px;
+        font-weight:900;
+        text-shadow:none;
+      }
+
+      .lbl{
+        margin-top:6px;
+        font-size:9px;
+        letter-spacing:.12em;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap card" id="countdownPage">
+    <header class="top">
+      <div class="logo" aria-label="JEM TV Logo">
+        <img
+          id="logoImg"
+          src="https://res.cloudinary.com/jemdev/image/upload/v1751394501/Group_1597880754_197fa55471.png"
+          alt="JEM TV"
+        />
+      </div>
+    </header>
+
+    <section class="content" id="countdownBlock" aria-label="Countdown to launch">
+      <div class="grid" role="timer" aria-live="polite">
+        <div class="unit"><div class="num" id="d">0</div><div class="lbl">Days</div></div>
+        <div class="unit"><div class="num" id="h">00</div><div class="lbl">Hours</div></div>
+        <div class="unit"><div class="num" id="m">00</div><div class="lbl">Mins</div></div>
+        <div class="unit"><div class="num" id="s">00</div><div class="lbl">Secs</div></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /**
+     * CONFIG
+     * LAUNCH_ISO: exact launch date/time in ISO format WITH timezone offset
+     * Example (New York): "2025-12-24T12:00:00-05:00"
+     */
+    const LAUNCH_ISO  = "2025-12-24T12:00:00-05:00"; // <-- set this
+
+    /**
+     * After launch:
+     * - "disappear": hide the whole countdown page
+     * - "freeze": keep showing 00:00:00
+     */
+    const AFTER_LAUNCH = "disappear"; // "disappear" | "freeze"
+
+    const $ = (id) => document.getElementById(id);
+    const pad2 = (n) => String(n).padStart(2, "0");
+
+    const launchMs = Date.parse(LAUNCH_ISO);
+
+    function render(msLeft){
+      const clamped = Math.max(0, msLeft);
+      const totalSeconds = Math.floor(clamped / 1000);
+
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const mins  = Math.floor((totalSeconds % 3600) / 60);
+      const secs  = totalSeconds % 60;
+
+      $("d").textContent = String(days);
+      $("h").textContent = pad2(hours);
+      $("m").textContent = pad2(mins);
+      $("s").textContent = pad2(secs);
+    }
+
+    function tick(){
+      if (Number.isNaN(launchMs)) return;
+
+      const now = Date.now();
+      const msLeft = launchMs - now;
+
+      if (msLeft <= 0) {
+        render(0);
+        if (AFTER_LAUNCH === "disappear") {
+          $("countdownPage").classList.add("hidden");
+        }
+        return;
+      }
+
+      render(msLeft);
+    }
+
+    setInterval(tick, 250);
+    tick();
+  </script>
+</body>
+</html>
