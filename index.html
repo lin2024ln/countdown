@@ -1,122 +1,166 @@
-<!-- TOP COUNTDOWN BAR -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JEM TV Countdown</title>
+
+<!-- Roboto ONLY -->
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700;900&display=swap" rel="stylesheet">
 
 <style>
-  .jem-countdown-wrap{
-    width:100%;
-    background:#0b1020;
-    border-bottom:1px solid rgba(255,255,255,.12);
-    font-family:"Roboto", Arial, sans-serif;
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Roboto", Arial, sans-serif;
   }
 
-  .jem-countdown{
-    max-width:1220px;
-    margin:0 auto;
-    padding:12px 16px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:16px;
+  /* ===============================
+     TOP COUNTDOWN STRIP
+  =============================== */
+  .jem-countdown-wrap {
+    width: 100%;
+    border-bottom: 1px solid rgba(0,0,0,.08);
   }
 
-  .jem-logo{
-    width:110px;
-    flex-shrink:0;
+  .jem-countdown {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 22px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
   }
 
-  .jem-logo img{
-    width:100%;
-    height:auto;
-    display:block;
+  /* LOGO */
+  .jem-logo img {
+    width: 160px;
+    height: auto;
+    display: block;
   }
 
-  .jem-timer{
-    display:flex;
-    gap:14px;
-    align-items:center;
-    font-weight:900;
-    color:#fff;
+  /* TIMER */
+  .jem-timer {
+    display: flex;
+    gap: 28px;
+    align-items: center;
   }
 
-  .jem-unit{
-    text-align:center;
-    min-width:54px;
+  .jem-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 84px;
   }
 
-  .jem-num{
-    font-size:20px;
-    line-height:1;
+  /* LABEL FIRST */
+  .jem-label {
+    font-size: 11px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,.55);
   }
 
-  .jem-lbl{
-    font-size:9px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    opacity:.75;
-    margin-top:4px;
+  /* NUMBER SECOND */
+  .jem-number {
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1;
+    color: #000;
   }
 
-  /* MOBILE */
-  @media (max-width: 768px){
-    .jem-countdown{
-      padding:10px 12px;
-      gap:10px;
+  /* ===============================
+     MOBILE — ONE ROW, TIGHT
+  =============================== */
+  @media (max-width: 768px) {
+    .jem-countdown {
+      padding: 16px 12px;
+      gap: 18px;
     }
 
-    .jem-logo{
-      width:90px;
+    .jem-logo img {
+      width: 120px;
     }
 
-    .jem-timer{
-      gap:8px;
+    .jem-timer {
+      gap: 14px;
     }
 
-    .jem-unit{
-      min-width:40px;
+    .jem-unit {
+      min-width: 56px;
+      gap: 4px;
     }
 
-    .jem-num{
-      font-size:16px;
+    .jem-label {
+      font-size: 8px;
+      letter-spacing: .14em;
     }
 
-    .jem-lbl{
-      font-size:8px;
+    .jem-number {
+      font-size: 20px;
     }
   }
 </style>
+</head>
 
-<div class="jem-countdown-wrap" id="jemCountdownBar">
+<body>
+
+<!-- ===============================
+     TOP COUNTDOWN
+=============================== -->
+<div class="jem-countdown-wrap" id="jemCountdown">
   <div class="jem-countdown">
+
     <div class="jem-logo">
-      <img src="https://res.cloudinary.com/jemdev/image/upload/v1751394501/Group_1597880754_197fa55471.png" alt="JEM TV">
+      <img
+        src="https://res.cloudinary.com/jemdev/image/upload/v1751394501/Group_1597880754_197fa55471.png"
+        alt="JEM TV">
     </div>
 
-    <div class="jem-timer" aria-live="polite">
-      <div class="jem-unit"><div class="jem-num" id="cd-d">0</div><div class="jem-lbl">Days</div></div>
-      <div class="jem-unit"><div class="jem-num" id="cd-h">00</div><div class="jem-lbl">Hrs</div></div>
-      <div class="jem-unit"><div class="jem-num" id="cd-m">00</div><div class="jem-lbl">Min</div></div>
-      <div class="jem-unit"><div class="jem-num" id="cd-s">00</div><div class="jem-lbl">Sec</div></div>
+    <div class="jem-timer" role="timer" aria-live="polite">
+      <div class="jem-unit">
+        <div class="jem-label">Days</div>
+        <div class="jem-number" id="cd-d">0</div>
+      </div>
+      <div class="jem-unit">
+        <div class="jem-label">Hours</div>
+        <div class="jem-number" id="cd-h">00</div>
+      </div>
+      <div class="jem-unit">
+        <div class="jem-label">Minutes</div>
+        <div class="jem-number" id="cd-m">00</div>
+      </div>
+      <div class="jem-unit">
+        <div class="jem-label">Seconds</div>
+        <div class="jem-number" id="cd-s">00</div>
+      </div>
     </div>
+
   </div>
 </div>
 
 <script>
-  /* CONFIG */
-  const LAUNCH_ISO = "2025-12-24T12:00:00-05:00";
+  /* ===============================
+     CONFIG
+  =============================== */
+  const LAUNCH_ISO = "2025-12-24T12:00:00-05:00"; // set this
   const AFTER_LAUNCH = "hide"; // "hide" | "freeze"
 
   const $ = id => document.getElementById(id);
-  const pad = n => String(n).padStart(2,"0");
+  const pad = n => String(n).padStart(2, "0");
   const launchMs = Date.parse(LAUNCH_ISO);
 
-  function tick(){
+  function tick() {
     if (Number.isNaN(launchMs)) return;
 
     const now = Date.now();
     let s = Math.max(0, Math.floor((launchMs - now) / 1000));
 
     if (s <= 0 && AFTER_LAUNCH === "hide") {
-      document.getElementById("jemCountdownBar").style.display = "none";
+      document.getElementById("jemCountdown").style.display = "none";
       return;
     }
 
@@ -129,3 +173,6 @@
   setInterval(tick, 250);
   tick();
 </script>
+
+</body>
+</html>
