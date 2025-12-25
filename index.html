@@ -178,7 +178,7 @@
 
 <script>
   /* CONFIG */
-  const LAUNCH_ISO = "2025-12-24T12:00:00-05:00"; // set this
+  const LAUNCH_ISO = "2025-12-28T14:00:00-05:00"; // December 28, 2:00 PM EST
   const AFTER_LAUNCH = "hide"; // "hide" | "freeze"
 
   const $ = id => document.getElementById(id);
@@ -197,8 +197,8 @@
     }
 
     $("cd-d").textContent = Math.floor(s / 86400);
-    $("cd-h").textContent = pad(Math.floor(s % 86400 / 3600));
-    $("cd-m").textContent = pad(Math.floor(s % 3600 / 60));
+    $("cd-h").textContent = pad(Math.floor((s % 86400) / 3600));
+    $("cd-m").textContent = pad(Math.floor((s % 3600) / 60));
     $("cd-s").textContent = pad(s % 60);
   }
 
