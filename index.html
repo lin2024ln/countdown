@@ -16,7 +16,7 @@
     font-family: "Roboto", Arial, sans-serif;
   }
 
-  /* TOP COUNTDOWN STRIP (NO BG) */
+  /* TOP STRIP (NO BG) */
   .jem-countdown-wrap {
     width: 100%;
     border-bottom: 1px solid rgba(255,255,255,.12);
@@ -29,35 +29,111 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 28px;
+    gap: 22px;
     min-width: 0; /* critical */
   }
 
-  /* LOGO (✅ shrinkable on any phone) */
+  /* LEFT CLUSTER: thumbnail + logo + tiny link */
+  .jem-left{
+    flex: 1 1 auto;         /* ✅ allow shrinking so timer never gets overlapped */
+    min-width: 0;           /* ✅ critical */
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  /* 16:9 thumbnail (small) */
+  .jem-thumb{
+    flex: 0 0 auto;
+    width: clamp(78px, 10.5vw, 112px);
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  }
+  .jem-thumb img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display:block;
+  }
+
+  /* LOGO (shrinkable) */
   .jem-logo{
-    flex: 0 1 auto;     /* allow shrinking */
-    min-width: 0;
+    flex: 0 1 auto;
+    min-width: 0;           /* ✅ critical for ellipsis to work */
+    display:flex;
+    flex-direction: column;
+    gap: 6px;
   }
   .jem-logo img {
-    width: clamp(92px, 22vw, 160px); /* ✅ always fits */
+    width: clamp(92px, 20vw, 160px);
     height: auto;
     display: block;
     filter: drop-shadow(0 0 18px rgba(255,255,255,.15));
   }
 
-  /* TIMER (✅ never clips) */
+  /* ✅ prevent "More about..." from pushing into timer */
+  .jem-mini-link{
+    font-size: 11px;
+    line-height: 1.2;
+    color: rgba(255,255,255,.70);
+    text-decoration: none;
+
+    display: block;         /* keep under logo */
+    max-width: clamp(120px, 16vw, 220px); /* ✅ cap width */
+    overflow: hidden;       /* ✅ */
+    text-overflow: ellipsis;/* ✅ */
+    white-space: nowrap;    /* ✅ single line + ellipsis */
+  }
+  .jem-mini-link:hover{ color: rgba(255,255,255,.88); text-decoration: underline; }
+
+  /* MIDDLE: title + (desktop) word */
+  .jem-info{
+    flex: 0 1 auto;
+    min-width: 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 10px;
+  }
+
+  .jem-title{
+    font-weight: 900;
+    letter-spacing: .01em;
+    color: #ffffff;
+    text-shadow: 0 0 24px rgba(255,255,255,.18);
+    font-size: clamp(14px, 2.1vw, 18px);
+    line-height: 1.15;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 520px;
+  }
+
+  .jem-premieres{
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.70);
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  /* RIGHT: TIMER */
   .jem-timer {
-    flex: 1 1 auto;
-    min-width: 0;      /* critical */
+    flex: 0 0 auto;        /* ✅ fixed width block; never gets squeezed into */
+    min-width: 0;
     display: flex;
-    gap: 28px;
+    gap: 22px;
     align-items: center;
     justify-content: flex-end;
   }
 
   .jem-unit {
-    flex: 1 1 0;        /* equal width units */
-    min-width: 0;       /* critical for tiny screens */
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -65,7 +141,6 @@
     text-align: center;
   }
 
-  /* LABEL FIRST */
   .jem-label {
     font-size: 11px;
     letter-spacing: .16em;
@@ -74,45 +149,83 @@
     white-space: nowrap;
   }
 
-  /* NUMBER SECOND (✅ fluid scaling for any phone width) */
   .jem-number {
-    font-size: clamp(16px, 5.2vw, 36px); /* ✅ never too big to fit */
+    font-size: clamp(16px, 5.2vw, 36px);
     font-weight: 900;
     line-height: 1;
     color: #ffffff;
     text-shadow: 0 0 24px rgba(255,255,255,.25);
   }
 
-  /* MOBILE — ONE ROW, TIGHT (same style) */
-  @media (max-width: 768px) {
-    .jem-countdown {
-      padding: 16px 12px;
-      gap: 18px;
-    }
+  /* AFTER LAUNCH PANEL */
+  .jem-after{
+    display:none;
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 22px 16px;
+  }
+  .jem-after-inner{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 16px;
+    min-width:0;
+    text-align:center;
+  }
+  .jem-after-block{
+    display:flex;
+    align-items:center;
+    gap: 14px;
+    min-width:0;
+    justify-content:center;
+    flex-wrap: wrap;
+  }
+  .jem-after-title{
+    font-weight: 900;
+    color:#ffffff;
+    text-shadow: 0 0 24px rgba(255,255,255,.18);
+    font-size: clamp(16px, 2.6vw, 22px);
+    line-height: 1.15;
+    max-width: 980px;
+  }
 
-    .jem-timer {
+  /* MOBILE: remove middle text, keep left + timer */
+  @media (max-width: 980px){
+    .jem-info{ display:none !important; }
+    .jem-countdown{
       gap: 14px;
     }
-
-    .jem-unit {
-      gap: 4px;
-    }
-
-    .jem-label {
-      font-size: 8px;
-      letter-spacing: .14em;
-    }
-
-    .jem-number {
-      text-shadow: 0 0 14px rgba(255,255,255,.25);
+    .jem-mini-link{
+      max-width: 160px; /* a bit tighter on phones */
     }
   }
 
-  /* Tiny phones: tighten gaps + shorten long labels (still same look) */
+  @media (max-width: 768px) {
+    .jem-countdown {
+      padding: 16px 12px;
+      gap: 14px;
+    }
+    .jem-timer { gap: 14px; }
+    .jem-unit { gap: 4px; }
+    .jem-label { font-size: 8px; letter-spacing: .14em; }
+    .jem-number { text-shadow: 0 0 14px rgba(255,255,255,.25); }
+    
+    .jem-mini-link {
+      display: none;
+    }
+    
+    .jem-logo::after {
+      content: "Premieres in:";
+      font-size: 11px;
+      line-height: 1.2;
+      color: rgba(255,255,255,.70);
+      text-decoration: none;
+    }
+  }
+
   @media (max-width: 420px){
     .jem-timer{ gap: 10px; }
-    .jem-label-min, .jem-label-sec{ font-size:0; } /* replace text */
-
+    .jem-label-min, .jem-label-sec{ font-size:0; }
     .jem-label-min::after{
       content:"Min";
       font-size:8px;
@@ -130,27 +243,39 @@
       display:inline-block;
     }
   }
-
-  @media (max-width: 320px){
-    .jem-countdown{ gap: 12px; }
-    .jem-timer{ gap: 8px; }
-    .jem-label{ letter-spacing:.12em; }
-    .jem-number{ text-shadow:none; }
-  }
 </style>
 </head>
 
 <body>
 
+<!-- BEFORE LAUNCH STRIP -->
 <div class="jem-countdown-wrap" id="jemCountdown">
   <div class="jem-countdown">
 
-    <div class="jem-logo">
-      <img
-        src="https://res.cloudinary.com/jemdev/image/upload/v1751394501/Group_1597880754_197fa55471.png"
-        alt="JEM TV">
+    <div class="jem-left">
+      <a class="jem-thumb" href="https://www.enduringpeace.org/video/the-rebbes-roadmap-to-peace-episode-3" target="_blank" rel="noopener" aria-label="Open film page">
+        <img src="https://res.cloudinary.com/jemdev/image/upload/v1766693706/maxresdefault_343ca01dd7.jpg" alt="Film thumbnail">
+      </a>
+
+      <div class="jem-logo">
+        <img
+          src="https://res.cloudinary.com/jemdev/image/upload/v1751394501/Group_1597880754_197fa55471.png"
+          alt="JEM TV">
+        <a class="jem-mini-link" href="https://www.enduringpeace.org/video/the-rebbes-roadmap-to-peace-episode-3" target="_blank" rel="noopener">
+          More about this Film
+        </a>
+      </div>
     </div>
 
+    <!-- DESKTOP ONLY text -->
+    <div class="jem-info" aria-label="Premiere information">
+      <div class="jem-title" title="The Rebbe's Roadmap to Peace — Episode 3">
+        The Rebbe's Roadmap to Peace — Episode 3
+      </div>
+      <div class="jem-premieres">Premieres in</div>
+    </div>
+
+    <!-- countdown -->
     <div class="jem-timer" role="timer" aria-live="polite">
       <div class="jem-unit">
         <div class="jem-label">Days</div>
@@ -176,23 +301,49 @@
   </div>
 </div>
 
+<!-- AFTER LAUNCH: replace countdown with centered thumbnail + title + button -->
+<div class="jem-countdown-wrap" id="jemAfterWrap" style="display:none;">
+  <div class="jem-after">
+    <div class="jem-after-inner">
+      <div class="jem-after-block">
+        <a class="jem-thumb" href="https://www.enduringpeace.org/video/the-rebbes-roadmap-to-peace-episode-3" target="_blank" rel="noopener" aria-label="Open film page">
+          <img src="https://res.cloudinary.com/jemdev/image/upload/v1766693706/maxresdefault_343ca01dd7.jpg" alt="Film thumbnail">
+        </a>
+
+        <div class="jem-after-title">
+          The Rebbe's Roadmap to Peace — Episode 3
+        </div>
+
+        <a class="jem-mini-link" style="max-width:none; white-space:nowrap; overflow:visible; text-overflow:clip;"
+           href="https://www.enduringpeace.org/video/the-rebbes-roadmap-to-peace-episode-3" target="_blank" rel="noopener">
+          See more
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   /* CONFIG */
   const LAUNCH_ISO = "2025-12-28T14:00:00-05:00"; // December 28, 2:00 PM EST
-  const AFTER_LAUNCH = "hide"; // "hide" | "freeze"
 
   const $ = id => document.getElementById(id);
   const pad = n => String(n).padStart(2, "0");
   const launchMs = Date.parse(LAUNCH_ISO);
 
+  function showAfterLaunch() {
+    document.getElementById("jemCountdown").style.display = "none";
+    document.getElementById("jemAfterWrap").style.display = "block";
+  }
+
   function tick() {
     if (Number.isNaN(launchMs)) return;
 
     const now = Date.now();
-    let s = Math.max(0, Math.floor((launchMs - now) / 1000));
+    let s = Math.floor((launchMs - now) / 1000);
 
-    if (s <= 0 && AFTER_LAUNCH === "hide") {
-      document.getElementById("jemCountdown").style.display = "none";
+    if (s <= 0) {
+      showAfterLaunch();
       return;
     }
 
