@@ -14,6 +14,7 @@
 
   body {
     font-family: "Roboto", Arial, sans-serif;
+    Background:#000;
   }
 
   /* TOP STRIP (NO BG) */
@@ -157,9 +158,8 @@
     text-shadow: 0 0 24px rgba(255,255,255,.25);
   }
 
-  /* AFTER LAUNCH PANEL */
+  /* AFTER LAUNCH: centered row thumbnail + button */
   .jem-after{
-    display:none;
     max-width: 1220px;
     margin: 0 auto;
     padding: 22px 16px;
@@ -175,29 +175,44 @@
   .jem-after-block{
     display:flex;
     align-items:center;
+    justify-content:center;
     gap: 14px;
     min-width:0;
-    justify-content:center;
     flex-wrap: wrap;
   }
-  .jem-after-title{
+
+  .jem-watch-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap: 10px;
+    padding: 7px 16px;
+    border-radius: 7px;
+    border: 1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.08);
+    color: #ffffff;
+    text-decoration: none;
     font-weight: 900;
-    color:#ffffff;
-    text-shadow: 0 0 24px rgba(255,255,255,.18);
-    font-size: clamp(16px, 2.6vw, 22px);
-    line-height: 1.15;
-    max-width: 980px;
+    letter-spacing: .02em;
+    text-shadow: 0 0 18px rgba(255,255,255,.12);
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  }
+  .jem-watch-btn:hover{
+    background: rgba(255,255,255,.12);
+    border-color: rgba(255,255,255,.30);
+  }
+  .jem-watch-btn .jem-watch-sub{
+    font-weight: 700;
+    opacity: .82;
+    letter-spacing: .04em;
   }
 
   /* MOBILE: remove middle text, keep left + timer */
   @media (max-width: 980px){
     .jem-info{ display:none !important; }
-    .jem-countdown{
-      gap: 14px;
-    }
-    .jem-mini-link{
-      max-width: 160px; /* a bit tighter on phones */
-    }
+    .jem-countdown{ gap: 14px; }
+    .jem-mini-link{ max-width: 160px; }
   }
 
   @media (max-width: 768px) {
@@ -209,11 +224,9 @@
     .jem-unit { gap: 4px; }
     .jem-label { font-size: 8px; letter-spacing: .14em; }
     .jem-number { text-shadow: 0 0 14px rgba(255,255,255,.25); }
-    
-    .jem-mini-link {
-      display: none;
-    }
-    
+
+    .jem-mini-link { display: none; }
+
     .jem-logo::after {
       content: "Premieres in:";
       font-size: 11px;
@@ -221,6 +234,9 @@
       color: rgba(255,255,255,.70);
       text-decoration: none;
     }
+
+    /* after launch: keep centered, allow wrap */
+    .jem-watch-btn{ width: auto; }
   }
 
   @media (max-width: 420px){
@@ -301,7 +317,7 @@
   </div>
 </div>
 
-<!-- AFTER LAUNCH: replace countdown with centered thumbnail + title + button -->
+<!-- AFTER LAUNCH: centered thumbnail + Watch now button (same link) -->
 <div class="jem-countdown-wrap" id="jemAfterWrap" style="display:none;">
   <div class="jem-after">
     <div class="jem-after-inner">
@@ -310,13 +326,10 @@
           <img src="https://res.cloudinary.com/jemdev/image/upload/v1766693706/maxresdefault_343ca01dd7.jpg" alt="Film thumbnail">
         </a>
 
-        <div class="jem-after-title">
-          The Rebbe's Roadmap to Peace — Episode 3
-        </div>
-
-        <a class="jem-mini-link" style="max-width:none; white-space:nowrap; overflow:visible; text-overflow:clip;"
-           href="https://www.enduringpeace.org/video/the-rebbes-roadmap-to-peace-episode-3" target="_blank" rel="noopener">
-          See more
+        <a class="jem-watch-btn"
+           href="https://www.enduringpeace.org/video/the-rebbes-roadmap-to-peace-episode-3"
+           target="_blank" rel="noopener">
+          Watch now
         </a>
       </div>
     </div>
